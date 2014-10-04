@@ -12,52 +12,52 @@
 ############################################################################################################
 
 
-____________________▄▄▄███████████████▄▄
-__________________▅▀█████▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓████▄
-_______________________▄▄▄█████▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓███▄▄
-____________________▄██▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓██▄_____▓▓
-_________________▄█▒▒▓__▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓██▓___▓▓
-______________▄█▒▒▒▒▒▓__▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓_______▓
-____________▄█▒▒▒▒▒▒▒▓_▓___▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓_________▓
-__________▄█▒▒▒▒▒▒▒▒▒▓______▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▓___________▓
-_________██▒▒▒████▓▓▓▓▓____▓____▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓________▓____▓
-________███▀▀██▓▓▓▓▓▓▓▓▓_▓_______▓▓▀▀▀▀▀▀██▓▓▓▓▓▓▓__________▓____▓█
-______█▀___▄█▓▓▓▓▓▓▓▓▓▓▓▓________▓_______██▓▓▓▓▓▓▓▓▓__________▓___▓██
-_________▄█▓▓▓▓▓▓▓▓█████▓▓______________██▓▓▓▓██▀▀▀▓__________▓___▓▓▓█
-_______▄█▓▓▓▓▓▓███▓███▓▓__▓____________█▓██▀▀▀_________________▓___▓▒▓▓█
-_____▄█▓▓▓▓▓███▒▒▓██▓██▓______________█▀▀__▓▓▓▓▓▓▓___________▓___▓▒▒▓▓█
-____██▓▓▓███▒▒▒▒▓██▓▓██▓_______________▓▓▓▓██████▓▓▀______▓_____▓▒▒▒▓▓█
-___█▓▓████▒▒▒▒▒▓██▓▓▒██▓____________▓▓███▒▒▓▓▓▓██▓_____________▓▒▒▒▒▓▓█
-__█▓█▀_██▒▒▒▒▒▒▓██▓▒▒██▓__________▓▓██▒▒▒▒▓▓▓▓▓██▓▄▀_________▓▓▓▒▒▒▓▓█
-_██____██▒▒▒▒▒▒▓██▒▒▓▓█▓▓________▓▓██▓▒▒▒▓▓▓▓▓▓██▓__________▓█▓▓▒▒▒▒▓█
-▀_____██▒▒▒▒▒▒▒▓██▒▒▓▓█▓▓_______▓▓██▓▓▓▒▒▒▓▓▓▓██▓▄▄▀______▓_█▓▓▒▒▒▒▓▓█
-_____██▒▒▒▒▒▒▒▒▓██▒▒▓▓█▓▓▓____▓▓██▓▓▓▓▒▒▒▒▓▓▓██▓____________█▓▓▒▒▒▒▒▓█
-_____██▒▒▒▒▒▒▒▒▓██▒▒▒▓██████▓▓▓██▓▓▓▒▒▒▒▒▓▓▓██▓___________█▓▓▓▒▒▒▒▒▓▓█
-____██▒▒▒▒▒▒▒▒▒▓██▒▓▓██▓▓▓▓▓████▓▓▓▒▒▒▒▒▓▓▓██▓___________█▓▓▓▒▒▒▒▒▒▓▓█
-____█▒▒▒▒▒▒▒▒▒▒▒▓█▓▓▓█▓▓______▓▓█▓▓▒▒▒▒▒▓▓▓▓██▓___________█▓▓▓▓▒▒▒▒▒▓▓█
-___█▒▒▒▒▒▒▒▒▒▒▒▓▓█▓▓██▓_______▓▓█▓▓▒▒▒▒▓▓▓▓██▓___________█▓▓▓▓█▒▒▒▒▒▓▓█
-___█▒▒▒▒▒▒█▒▒▒▒▓▓▓▓▓▓__________▓▓█▓▒▒▒▒▓▓▓▓██▓___________█▓▓▓▓█▒▒▒▒▒█▓▓█
-__█▒▒▒▒▒▒█▒▒▒▒▓▓▓▓____▄▄___▄___▓▓██▒▒▒▒▓▓███▓____________█▓▓▓██▒▒▒▒▒██▓█
-__█▒▒▒▒▒██▒▒▒▓▓▓▓▓▓________█▐___▓▓████████▓▓____________█▓▓▓█_█▒█▒▒▒█_█▓█
-__█▒▒▒██_█▒▒▒▓▓▓▓▓▓▓▓▓▄▄▄▀_▐____▓▓▓▓███▓▓_________▓▓▓▓█▓▓█_█▒▒█▒▒▒█__██
-_█▒▒▒█___█▒▒▒▓▓▓▓▓▓▓▓▓▓_____▐________▓▓▓▓________▓▓▓___████___█▒▒█▒▒█____█
-_█▒▒█____█▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▄▀_______________▓▓▓▓▓_____██______█▒▒██▒▒█____█
-_█▒█______█▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓___________________█▒▒███▒█
-_██_______█▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓█____________________________█▒▒█_█▒█
-_█_________█▒▒▓▓▓▓▓▓▓▓▓▓▓▓█▓▓▓▓█_____________________________█▒█___█▒█
-____________█▒▓▓▓▓▓▓▓█▓▓▓▓▓██▓▓█____________________________█▒█_____██
-____________█▒▓▓▓▓▓▓▓██▓▓▓█__███____________________________██_______█
-_____________█▓▓▓▓▓▓▓█_█▓▓▓█___█____________________________█_________▀
-______________█▓▓▓▓▓▓█__█▓▓▓█
-______________█▓▓▓▓▓▓█___██▓█
-_______________█▓▓▓▓▓█______██
-________________█▓▓▓▓▓█_______█
-_________________█▓▓▓▓█
-__________________██▓▓▓█
-____________________█▓▓▓█
-_____________________██▓▓█
-________________________██
-__________________________█
+_______________________¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦__
+__________________?¯¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦_
+__________________________¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦__
+_____________________¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦______¦¦
+__________________¦¦¦¦__¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦___¦¦
+_______________¦¦¦¦¦¦¦__¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦_______¦
+_____________¦¦¦¦¦¦¦¦¦_¦___¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦_________¦
+___________¦¦¦¦¦¦¦¦¦¦¦______¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦___________¦
+_________¦¦¦¦¦¦¦¦¦¦¦¦¦¦____¦____¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦________¦____¦
+________¦¦¦¯¯¦¦¦¦¦¦¦¦¦¦¦_¦_______¦¦¯¯¯¯¯¯¦¦¦¦¦¦¦¦¦__________¦____¦¦
+______¦¯____¦¦¦¦¦¦¦¦¦¦¦¦¦________¦_______¦¦¦¦¦¦¦¦¦¦¦__________¦___¦¦¦
+__________¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦______________¦¦¦¦¦¦¦¦¯¯¯¦__________¦___¦¦¦¦
+________¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦__¦____________¦¦¦¦¯¯¯_________________¦___¦¦¦¦¦
+______¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦______________¦¯¯__¦¦¦¦¦¦¦___________¦___¦¦¦¦¦¦
+____¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦_______________¦¦¦¦¦¦¦¦¦¦¦¦¯______¦_____¦¦¦¦¦¦¦
+___¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦____________¦¦¦¦¦¦¦¦¦¦¦¦¦¦_____________¦¦¦¦¦¦¦¦
+__¦¦¦¯_¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦__________¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦_¯_________¦¦¦¦¦¦¦¦¦
+_¦¦____¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦________¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦__________¦¦¦¦¦¦¦¦¦¦
+¯_____¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦_______¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦__¯______¦_¦¦¦¦¦¦¦¦¦¦
+_____¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦____¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦____________¦¦¦¦¦¦¦¦¦¦
+_____¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦___________¦¦¦¦¦¦¦¦¦¦¦¦
+____¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦___________¦¦¦¦¦¦¦¦¦¦¦¦¦
+____¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦______¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦___________¦¦¦¦¦¦¦¦¦¦¦¦¦
+___¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦_______¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦___________¦¦¦¦¦¦¦¦¦¦¦¦¦¦
+___¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦__________¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦___________¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦
+__¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦_____________¦¦¦¦¦¦¦¦¦¦¦¦¦¦____________¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦
+__¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦________¦¦___¦¦¦¦¦¦¦¦¦¦¦¦____________¦¦¦¦¦_¦¦¦¦¦¦¦_¦¦¦
+__¦¦¦¦¦¦_¦¦¦¦¦¦¦¦¦¦¦¦¦___¯_¦____¦¦¦¦¦¦¦¦¦_________¦¦¦¦¦¦¦¦_¦¦¦¦¦¦¦¦__¦¦
+_¦¦¦¦¦___¦¦¦¦¦¦¦¦¦¦¦¦¦¦_____¦________¦¦¦¦________¦¦¦___¦¦¦¦___¦¦¦¦¦¦¦____¦
+_¦¦¦¦____¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦_¯_______________¦¦¦¦¦_____¦¦______¦¦¦¦¦¦¦¦____¦
+_¦¦¦______¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦___________________¦¦¦¦¦¦¦¦
+_¦¦_______¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦____________________________¦¦¦¦_¦¦¦
+_¦_________¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦_____________________________¦¦¦___¦¦¦
+____________¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦____________________________¦¦¦_____¦¦
+____________¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦__¦¦¦____________________________¦¦_______¦
+_____________¦¦¦¦¦¦¦¦¦_¦¦¦¦¦___¦____________________________¦_________¯
+______________¦¦¦¦¦¦¦¦__¦¦¦¦¦
+______________¦¦¦¦¦¦¦¦___¦¦¦¦
+_______________¦¦¦¦¦¦¦______¦¦
+________________¦¦¦¦¦¦¦_______¦
+_________________¦¦¦¦¦¦
+__________________¦¦¦¦¦¦
+____________________¦¦¦¦¦
+_____________________¦¦¦¦¦
+________________________¦¦
+__________________________¦
 
 This version of PonyHack aims that fixing the horrible mess I created in PonyHack v1, it also has a lot more features than v1 and a lot of stuff has been redone.
 This is a generic hack that can be used on any gamemode and it's made to be used on servers that have sv_allowcslua set to 1. 
@@ -81,7 +81,8 @@ local data = {
 	link="Loading...",
 	info="Loading..."
 }
-
+pony.Nospread = false
+pony.Spreads = {}
 pony.detours = {} -- This should probably be removed since it's no longer being used.
 
 
@@ -103,6 +104,8 @@ surface.CreateFont( "PonyFont_n", {
 require("hook")
 
 -- Localizing functions we use often, should make them run a bit faster
+local _G = _G
+local _R = debug.getregistry()
 local LocalPlayer = LocalPlayer
 local math = math
 local draw = draw
@@ -124,7 +127,8 @@ local MASK_SHOT = MASK_SHOT
 local IN_ATTACK = IN_ATTACK
 local KEY_SPACE = KEY_SPACE
 local KEY_E = KEY_E
-
+local me = LocalPlayer()
+--Only need to call this once hafnium
 -- Menu color
 local CurColor = 3
 local ForColors = {Color(150,0,255,255),
@@ -148,6 +152,15 @@ Description:
 
 function pony.print(txt)
 	return MsgC( Color(255,0,0,255), pony.prefix, Color(255,255,255,255), " " .. txt .. "\n")
+end
+
+local tempr = table.Copy( _R )
+
+_R.Entity.FireBullets = function( ent, bullet )
+	if not pony.Spreads[me:GetActiveWeapon():GetClass()] || pony.Spreads[me:GetActiveWeapon():GetClass()] != bullet.Spread then
+		pony.Spreads[me:GetActiveWeapon():GetClass()] = bullet.Spread
+	end
+	return tempr.Entity.FireBullets( ent, bullet )
 end
 
 function pony.drawtext(txt,x,y,col)
@@ -183,7 +196,7 @@ function pony.getfakeangle()
 		return old_angs
 	end
 
-	return LocalPlayer():EyeAngles()
+	return me:EyeAngles()
 
 end
 
@@ -198,10 +211,10 @@ function pony.isvisible(target) -- This needs to be improved in the futire
 	end
 
 	local tr = {}
-	tr.start = LocalPlayer():GetShootPos()
+	tr.start = me:GetShootPos()
 	tr.endpos = headpos or (target:GetPos() + Vector(0,0,16)) 
 	tr.mask = MASK_SHOT
-	tr.filter = {LocalPlayer(), target}
+	tr.filter = {me, target}
  
 	local trace = util.TraceLine( tr )
 
@@ -282,17 +295,18 @@ end
 function pony.closest(ents)
 
 	local ent_distances = {}
-
-	for k,v in pairs(ents) do
-		ent_distances[k] = pony.distance( LocalPlayer():GetPos(), v:GetPos() )
+	--Really Pairs?
+	for i = 1, #ents do
+		local v = ents[i]
+		ent_distances[i] = pony.distance( me:GetPos(), v:GetPos() )
 	end
 
 	local closest = math.min( unpack( ent_distances ) )
 
-	for k,v in pairs(ent_distances) do
-
+	for i = 1, #ent_distances do
+		local v = ent_distances[i]
 		if closest == v then
-			return ents[k]
+			return ents[i]
 		end
 
 	end
@@ -376,6 +390,7 @@ vars["aimbot.babygod"] = false
 vars["aimbot.noclip"] = false
 vars["aimbot.team"] = false
 vars["aimbot.rage"] = false
+vars["aimbot.nospread"] = false
 
 vars["misc.bhop"] = false
 vars["misc.fastshoot"] = false
@@ -400,9 +415,9 @@ pony.addhook("HUDPaint", "player.wallhack", function()
 
 	for _,v in pairs(player.GetAll()) do
 
-		local distance = pony.distance(LocalPlayer():GetPos(), v:GetPos())
+		local distance = pony.distance(me:GetPos(), v:GetPos())
 
-		if v != LocalPlayer() and !pony.dormant(v) and v:Alive() then
+		if v != me and !pony.dormant(v) and v:Alive() then
 
 			local posy = ( v:GetPos() + Vector(0,0,60)):ToScreen()
 
@@ -456,7 +471,7 @@ pony.addhook("HUDPaint", "wallhack.entities", function()
 
 	for k,v in pairs(ents.GetAll()) do
 
-		if table.HasValue(vars["esp.ents"], v:GetClass()) and pony.distance( LocalPlayer():GetPos(), v:GetPos() ) and !v:IsDormant() then
+		if table.HasValue(vars["esp.ents"], v:GetClass()) and pony.distance( me:GetPos(), v:GetPos() ) and !v:IsDormant() then
 
 			surface.SetFont("PonyFont")
 			local class = v:GetClass()
@@ -472,8 +487,8 @@ pony.addhook("HUDPaint", "wallhack.entities", function()
 				local col = ForColors[CurColor]
 
 				render.SetColorModulation( col.r/255, col.g/255, col.b/255 )
+				render.SetBlend( 0.8 )
 					v:DrawModel()
-				render.SetColorModulation( 1, 1, 1 )
 				
 				render.SuppressEngineLighting( false )
 				render.MaterialOverride(0)
@@ -529,7 +544,7 @@ pony.addhook("HUDPaint", "wallhack.crosshair", function()
 	surface.SetDrawColor( ForColors[CurColor] )
  
 	
-	local wep = LocalPlayer():GetActiveWeapon()
+	local wep = me:GetActiveWeapon()
 	local gapx
 
 	if wep and wep.Primary and wep.Primary.Spread then
@@ -576,12 +591,12 @@ pony.addhook("CreateMove", "aimbot", function(cmd)
 
 	for _,v in pairs(player.GetAll()) do
 
-		if v != LocalPlayer() and v:Alive() and !v:IsDormant() and pony.isvisible(v) then
+		if v != me and v:Alive() and !v:IsDormant() and pony.isvisible(v) then
 
 			if (vars["aimbot.friends"] and v:GetFriendStatus() == "friend") or 
 				(vars["aimbot.babygod"] and v:GetColor().a != 255) or 
 				(vars["aimbot.noclip"] and v:GetMoveType() == MOVETYPE_NOCLIP) or 
-				(vars["aimbot.team"] and v:Team() == LocalPlayer():Team()) then
+				(vars["aimbot.team"] and v:Team() == me:Team()) then
 			else
 				table.insert(possible_targets, v)
 
@@ -602,7 +617,19 @@ pony.addhook("CreateMove", "aimbot", function(cmd)
 
 	if cmd:KeyDown( IN_ATTACK ) or vars["aimbot.rage"] then
 		old_angs = cmd:GetViewAngles()
-		cmd:SetViewAngles( ( target:GetBonePosition( target:LookupBone("ValveBiped.Bip01_Head1") ) - LocalPlayer():GetShootPos() ):Angle() )
+		if pony.Nospread then
+		if not pony.Spreads[ me:GetActiveWeapon():GetClass() ] then
+		pony.attack(cmd)
+		else
+		local angle = ( target:GetAttachment( target:LookupAttachment( "eyes" ) ).Pos - me:GetShootPos() ):Angle()
+		angle = DS_manipulateShot(DS_md5PseudoRandom(cmd:CommandNumber()), angle:Forward(), Vector(-pony.Spreads[me:GetActiveWeapon():GetClass()].x, -pony.Spreads[me:GetActiveWeapon():GetClass()].y, 0)):Angle();
+		cmd:SetViewAngles( angle )
+		end
+		else
+		local angle = ( target:GetAttachment( target:LookupAttachment( "eyes" ) ).Pos - me:GetShootPos() ):Angle()
+		cmd:SetViewAngles( angle )
+		end
+		
 
 		if vars["aimbot.rage"] then
 			pony.attack(cmd)
@@ -636,7 +663,7 @@ pony.addhook("CreateMove", "bhop", function(cmd)
 
 	if !vars["misc.bhop"] then return end
 
-	if LocalPlayer():IsOnGround() and input.IsKeyDown( KEY_SPACE ) then
+	if me:IsOnGround() and input.IsKeyDown( KEY_SPACE ) then
 		RunConsoleCommand("+jump")
 	else
 		RunConsoleCommand("-jump")
@@ -1481,5 +1508,10 @@ end
 concommand.Add("pony", function()
 	pony.menu()
 end)
+if file.Find( "lua/bin/gmcl_spreadthebutter_win32.dll", "MOD" ) then
+	pony.print( "Nospread Module Found!" )
+	pony.Nospread = true
+	require( "spreadthebutter" )
+end
 
 pony.RetreiveUpdate() -- We might as well do a update check when we load
