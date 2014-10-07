@@ -74,6 +74,10 @@ If you have any problems with this hack or just want to add me, feel free to do 
 
 ]]--
 
+if !file.Exists("PonyHack","DATA") then
+	file.CreateDir("PonyHack")
+end
+
 local pony = {}
 local vars = {}
 local data = {
@@ -81,13 +85,51 @@ local data = {
 	link="Loading...",
 	info="Loading..."
 }
+
+if !detours then -- We'll eventually add more shit here...
+
+	detours = {}
+
+	detours.RunConsoleCommand = RunConsoleCommand
+	detours.NetStart = net.Start
+
+end
+
+pony.logs = {}
+
+function pony.log(txt, log_type)
+
+	if !vars["more.log"] then 
+		return 
+	end
+
+	table.insert( pony.logs,  log_type .. "->" .. txt )
+	
+	MsgC(Color(255,200,0,255), "[DETOUR] (" .. log_type .. ") ", Color(255,255,255,255), txt .. "\n")
+
+end
+
+function RunConsoleCommand(cmd,...)
+
+	pony.log(cmd, "RunConsoleCommand")
+
+	return detours.RunConsoleCommand(cmd,...)
+
+end
+
+function net.Start(name)
+
+	pony.log(name, "net.Start")
+
+end
+
+
 pony.Nospread = false
 pony.Spreads = {}
 pony.detours = {} -- This should probably be removed since it's no longer being used.
 
-
 pony.name = "PonyHack"
-pony.version = "2.5.1"
+pony.version = "2.6.0"
 pony.author = "Kawaii Hafnium"
 pony.prefix = "[PonyHack]"
 
@@ -104,8 +146,6 @@ surface.CreateFont( "PonyFont_n", {
 require("hook")
 
 -- Localizing functions we use often, should make them run a bit faster
-local _G = _G
-local _R = debug.getregistry()
 local LocalPlayer = LocalPlayer
 local math = math
 local draw = draw
@@ -127,8 +167,9 @@ local MASK_SHOT = MASK_SHOT
 local IN_ATTACK = IN_ATTACK
 local KEY_SPACE = KEY_SPACE
 local KEY_E = KEY_E
+local _R = debug.getregistry()
 local me = LocalPlayer()
---Only need to call this once hafnium
+
 -- Menu color
 local CurColor = 3
 local ForColors = {Color(150,0,255,255),
@@ -150,17 +191,16 @@ Description:
 	A bunch of functions that the hack utilizes, every function should be inside the 'pony' table.
 ]]--
 
-function pony.print(txt)
-	return MsgC( Color(255,0,0,255), pony.prefix, Color(255,255,255,255), " " .. txt .. "\n")
-end
-
 local tempr = table.Copy( _R )
-
 _R.Entity.FireBullets = function( ent, bullet )
 	if not pony.Spreads[me:GetActiveWeapon():GetClass()] || pony.Spreads[me:GetActiveWeapon():GetClass()] != bullet.Spread then
 		pony.Spreads[me:GetActiveWeapon():GetClass()] = bullet.Spread
 	end
 	return tempr.Entity.FireBullets( ent, bullet )
+end
+
+function pony.print(txt)
+	return MsgC( Color(255,0,0,255), pony.prefix, Color(255,255,255,255), " " .. txt .. "\n")
 end
 
 function pony.drawtext(txt,x,y,col)
@@ -196,29 +236,37 @@ function pony.getfakeangle()
 		return old_angs
 	end
 
-	return me:EyeAngles()
+	return Angle(me:EyeAngles().p,me:EyeAngles().y, me:EyeAngles().r)
 
 end
 
 
 function pony.isvisible(target) -- This needs to be improved in the futire
 
-	local target_head = target:LookupBone("ValveBiped.Bip01_Head")
+	//if true then return true end
+
+	local target_head = target:LookupAttachment( "eyes" )
 	local headpos
 	
 	if target_head then
-		headpos = target:GetBonePosition(target_head)
+		headpos = target:GetAttachment( target_head ).Pos
 	end
 
+	local StartPos = me:GetShootPos()
+
 	local tr = {}
-	tr.start = me:GetShootPos()
+	tr.start = StartPos
 	tr.endpos = headpos or (target:GetPos() + Vector(0,0,16)) 
 	tr.mask = MASK_SHOT
-	tr.filter = {me, target}
+	tr.filter = function( ent ) return true end 
  
 	local trace = util.TraceLine( tr )
 
-	if trace.Hit then return false else return true end
+	if (trace.Fraction == 1) then
+		return true;
+	else
+		return false;
+	end
 
 end
 
@@ -241,7 +289,7 @@ end
 
 function pony.dormant(ent)
 
-	if #player.GetAll() >= 15 then -- If there are 15 or more players on the server, enter optimized mode :D
+	if #player.GetAll() >= 15 then -- Just incase things get laggy
 		return ent:IsDormant()
 	else
 		return false
@@ -268,6 +316,12 @@ function pony.msg(txt, msgtime)
 		draw.RoundedBox(4, 0, 0, msgbox:GetWide(), msgbox:GetTall(), Color(0,0,0,255))
 		pony.drawtext(txt, 10, msgbox:GetTall()*0.5)
 	end
+
+	surface.SetFont("PonyFont")
+	local txt_size = surface.GetTextSize(txt)
+	msgbox:SetWide(txt_size + 20)
+	msgbox:SetPos(ScrW() - txt_size - 30, 50)
+
 	table.insert(messages,msgbox)
 
 	timer.Create("msgtime", 1, 0, function()
@@ -295,19 +349,26 @@ end
 function pony.closest(ents)
 
 	local ent_distances = {}
-	--Really Pairs?
+
 	for i = 1, #ents do
-		local v = ents[i]
+
+		v = ents[i]
 		ent_distances[i] = pony.distance( me:GetPos(), v:GetPos() )
+		i = i+1
+
 	end
 
 	local closest = math.min( unpack( ent_distances ) )
 
 	for i = 1, #ent_distances do
-		local v = ent_distances[i]
+
+		v = ent_distances[i]
+
 		if closest == v then
 			return ents[i]
 		end
+
+		i = i+1
 
 	end
 
@@ -346,7 +407,7 @@ function pony.RetreiveUpdate()
 		data.info = info[3]
 
 		if data.version != pony.version then
-			pony.msg("Update avaible! Update to version " .. data.version .. " with the update tab!")
+			--pony.msg("Update " .. data.version .. " avaible! Check update tab for details.", 10)
 		end
 
 	end)
@@ -375,7 +436,7 @@ Description:
 	Variables that the hack uses, these variables can be set with pony.setvar and retreived with pony.getvar.
 ]]--
 
-vars["esp.distance"] = 1000
+vars["esp.distance"] = 5000
 vars["esp.players"] = false
 vars["esp.entity"] = false
 vars["esp.ents"] = {"money_printer", "spawned_money", "spawned_shipment"}
@@ -383,7 +444,7 @@ vars["esp.staff"] = false
 vars["esp.crosshair"] = false
 
 vars["aimbot.enabled"] = false
-vars["aimbot.limb"] = "ValveBiped.Bip01_Head"
+vars["aimbot.limb"] = "eyes" -- Unused var, not sure why it's still here, maybe I'll use it.
 vars["aimbot.silent"] = false
 vars["aimbot.friends"] = false
 vars["aimbot.babygod"] = false
@@ -397,7 +458,6 @@ vars["misc.fastshoot"] = false
 vars["misc.dancer"] = false
 vars["misc.offline"] = false
 vars["misc.ezpk"] = false
-
 
 --[[
 Name: 
@@ -413,13 +473,31 @@ pony.addhook("HUDPaint", "player.wallhack", function()
 		return
 	end
 
-	for _,v in pairs(player.GetAll()) do
-
-		local distance = pony.distance(me:GetPos(), v:GetPos())
+	for _,v in pairs( player.GetAll() ) do
 
 		if v != me and !pony.dormant(v) and v:Alive() then
 
-			local posy = ( v:GetPos() + Vector(0,0,60)):ToScreen()
+
+			cam.Start3D()
+
+				cam.IgnoreZ(true)
+				render.MaterialOverride(Material("models/debug/debugwhite"))
+				render.SuppressEngineLighting( true )
+
+				local col = team.GetColor( v:Team() )
+
+				render.SetColorModulation( col.r/255, col.g/255, col.b/255 )
+					v:DrawModel()
+				render.SetColorModulation( 1, 1, 1 )
+				
+				render.SuppressEngineLighting( false )
+				render.MaterialOverride(0)
+				cam.IgnoreZ(false)
+
+			cam.End3D()
+
+
+			local posy = v:LocalToWorld( v:OBBCenter() ):ToScreen() -- I wanted it to be perfectly in the center ^.^
 
 			local name = v:Nick() or "N/A"
 			local health = v:Health() or 0
@@ -434,6 +512,8 @@ pony.addhook("HUDPaint", "player.wallhack", function()
 
 			surface.SetFont("PonyFont")
 			local x,y = surface.GetTextSize("X")
+
+			posy.y = posy.y - y*2
 
 			pony.drawtext("N: " .. name, posy.x,posy.y)
 			pony.drawtext("H: " .. health, posy.x,posy.y + y)
@@ -454,7 +534,6 @@ pony.addhook("HUDPaint", "player.wallhack", function()
 			draw.RoundedBox(0, posy.x - width - 5 - 2, posy.y - 2, width + 4, healthbar + 4, Color(0, 0, 0, 255) )
 			draw.RoundedBox(0, posy.x - width - 5, posy.y, width, healthbar * 0.01 * health, Color(0, 200, 0, 200) )
 
-
 		end 
 
 	end
@@ -466,12 +545,12 @@ end)
 pony.addhook("HUDPaint", "wallhack.entities", function()
 
 	if !vars["esp.entity"] then
-		//return
+		return
 	end
 
 	for k,v in pairs(ents.GetAll()) do
 
-		if table.HasValue(vars["esp.ents"], v:GetClass()) and pony.distance( me:GetPos(), v:GetPos() ) and !v:IsDormant() then
+		if table.HasValue(vars["esp.ents"], v:GetClass()) and ( pony.distance( me:GetPos(), v:GetPos() ) <= vars["esp.distance"] ) and !v:IsDormant() then
 
 			surface.SetFont("PonyFont")
 			local class = v:GetClass()
@@ -479,7 +558,6 @@ pony.addhook("HUDPaint", "wallhack.entities", function()
 			local posy = v:GetPos():ToScreen()
 
 			cam.Start3D()
-				//local col = v:GetColor()
 				cam.IgnoreZ(true)
 				render.MaterialOverride(Material("models/debug/debugwhite"))
 				render.SuppressEngineLighting( true )
@@ -489,6 +567,7 @@ pony.addhook("HUDPaint", "wallhack.entities", function()
 				render.SetColorModulation( col.r/255, col.g/255, col.b/255 )
 				render.SetBlend( 0.8 )
 					v:DrawModel()
+				render.SetColorModulation( 1, 1, 1 )
 				
 				render.SuppressEngineLighting( false )
 				render.MaterialOverride(0)
@@ -567,6 +646,10 @@ end)
 local target = nil
 pony.addhook("CreateMove", "aimbot", function(cmd)
 
+	//cmd:SetViewAngles( Angle( -181, cmd:GetViewAngles().y, cmd:GetViewAngles().r ) )
+
+	//local time1 = os.clock()
+
 	if !vars["aimbot.enabled"] then
 		return
 	end
@@ -575,68 +658,130 @@ pony.addhook("CreateMove", "aimbot", function(cmd)
 	if old_angs then
 
 		if vars["aimbot.silent"] then
-		cmd:SetViewAngles(old_angs)
+			cmd:SetViewAngles(old_angs)
 		end
 
 		old_angs = nil
 
 		if vars["aimbot.silent"] then
-		cmd:ClearButtons()
-		return
+			cmd:ClearButtons()
+			return
 		end
 
 	end
 
-	local possible_targets = {}
+	if !IsValid(target) or !target:Alive() or !pony.isvisible(target) then 
 
-	for _,v in pairs(player.GetAll()) do
+		local possible_targets = {}
 
-		if v != me and v:Alive() and !v:IsDormant() and pony.isvisible(v) then
+		for i = 1, #player.GetAll() do
 
-			if (vars["aimbot.friends"] and v:GetFriendStatus() == "friend") or 
-				(vars["aimbot.babygod"] and v:GetColor().a != 255) or 
-				(vars["aimbot.noclip"] and v:GetMoveType() == MOVETYPE_NOCLIP) or 
-				(vars["aimbot.team"] and v:Team() == me:Team()) then
-			else
-				table.insert(possible_targets, v)
+			v = player.GetAll()[i]
+			i = i+1
+
+			if v != me and pony.isvisible(v) and !v:IsDormant() and v:Alive() then
+
+				if (vars["aimbot.friends"] and v:GetFriendStatus() == "friend") or 
+					(vars["aimbot.babygod"] and v:GetColor().a != 255) or 
+					(vars["aimbot.noclip"] and v:GetMoveType() == MOVETYPE_NOCLIP) or 
+					(vars["aimbot.team"] and v:Team() == me:Team()) then
+				else
+
+					table.insert(possible_targets, v)
+
+				end
 
 			end
 
+
 		end
 
+		local ent = pony.closest(possible_targets)
+
+		if not IsValid(ent) then
+			return
+		end
+
+		target = ent
 
 	end
-
-	local ent = pony.closest(possible_targets)
-
-	if not IsValid(ent) then
-		return
-	end
-
-	target = ent
 
 	if cmd:KeyDown( IN_ATTACK ) or vars["aimbot.rage"] then
+		
 		old_angs = cmd:GetViewAngles()
-		if pony.Nospread then
-		if not pony.Spreads[ me:GetActiveWeapon():GetClass() ] then
-		pony.attack(cmd)
+
+		local new_angs = ( target:GetBonePosition( target:LookupBone("ValveBiped.Bip01_Head1") ) - me:GetShootPos() ):Angle()
+
+		//cmd:SetViewAngles( new_angs )
+
+		if pony.Nospread and vars["more.nospread"] then
+		
+			if !IsValid(me:GetActiveWeapon()) or !pony.Spreads[ me:GetActiveWeapon():GetClass() ] then
+				local angle = ( target:GetAttachment( target:LookupAttachment( vars["aimbot.limb"]  ) ).Pos - me:GetShootPos() ):Angle()
+				cmd:SetViewAngles( angle )
+			else
+				local angle = ( target:GetAttachment( target:LookupAttachment( vars["aimbot.limb"]  ) ).Pos - me:GetShootPos() ):Angle()
+				angle = DS_manipulateShot(DS_md5PseudoRandom(cmd:CommandNumber()), angle:Forward(), Vector(-pony.Spreads[me:GetActiveWeapon():GetClass()].x, -pony.Spreads[me:GetActiveWeapon():GetClass()].y, 0)):Angle();
+				cmd:SetViewAngles( angle )
+			end
 		else
-		local angle = ( target:GetAttachment( target:LookupAttachment( "eyes" ) ).Pos - me:GetShootPos() ):Angle()
-		angle = DS_manipulateShot(DS_md5PseudoRandom(cmd:CommandNumber()), angle:Forward(), Vector(-pony.Spreads[me:GetActiveWeapon():GetClass()].x, -pony.Spreads[me:GetActiveWeapon():GetClass()].y, 0)):Angle();
-		cmd:SetViewAngles( angle )
-		end
-		else
-		local angle = ( target:GetAttachment( target:LookupAttachment( "eyes" ) ).Pos - me:GetShootPos() ):Angle()
-		cmd:SetViewAngles( angle )
+			local angle = ( target:GetAttachment( target:LookupAttachment( vars["aimbot.limb"]  ) ).Pos - me:GetShootPos() ):Angle()
+			cmd:SetViewAngles( angle )
 		end
 		
+
+		-- If it wasn't for willox, I'd be struggling on this for hours ^.^
+
+		local ang = new_angs - pony.getfakeangle()
+
+		local MoveSpeed = 10
+
+		if !input.IsKeyDown( KEY_W ) then
+			MoveSpeed = 0
+		end
+
+		if input.IsKeyDown( KEY_S ) then
+			MoveSpeed = -10
+		end
+
+		cmd:SetForwardMove( (ang:Forward().x*100) * MoveSpeed )
+        cmd:SetSideMove( (ang:Forward().y*100) * MoveSpeed )   
 
 		if vars["aimbot.rage"] then
 			pony.attack(cmd)
 		end
 
+		//print( os.clock() - time1 )
+
 	end
 
+
+
+end)
+
+pony.addhook("Think", "norecoil", function()
+
+	if !vars["more.norecoil"] then return end
+
+	local weapon = me:GetActiveWeapon()
+
+	if !IsValid(weapon) then
+		return
+	end
+
+	if weapon.Primary then
+
+		if weapon.Primary.Recoil then
+			weapon.Primary.Recoil = 0
+		end
+
+		if weapon.Primary.KickUp then
+			weapon.Primary.KickUp = 0
+			weapon.Primary.KickDown = 0
+			weapon.Primary.KickHorizontal = 0
+		end
+
+	end
 
 
 end)
@@ -711,8 +856,290 @@ end)
 Name: 
 	PonyMenu
 Description: 
-	The hack's menu, don't be surprised if you don't understand the menu's code...
+	The hack's menu, don't be surprised if you don't understand the menu's code... It's extremely messy
 ]]--
+
+function pony.menu_logs()
+
+	local ForColor = ForColors[CurColor]
+
+	local backpanel = vgui.Create("DFrame")
+	backpanel:SetSize(512,512)
+	backpanel:MakePopup()
+	backpanel:SetDraggable(false)
+	backpanel:SetTitle("Logs...")
+	backpanel:Center()
+
+	function backpanel.Paint()
+		draw.RoundedBox(2, 0, 0, backpanel:GetWide(), backpanel:GetTall(), ForColor)
+		draw.RoundedBox(2, 1, 1, backpanel:GetWide() - 2, backpanel:GetTall() - 2, BgColor)
+		draw.RoundedBox(0, 0, 0, backpanel:GetWide(), 22, ForColor)
+	end
+
+	local logger = vgui.Create("DTextEntry", backpanel)
+	logger:SetSize(backpanel:GetWide()-10, backpanel:GetTall()-27 - 5)
+	logger:SetMultiline(true)
+	logger:SetPos(5,22+5)
+
+	local txt = ""
+	for k,v in pairs(pony.logs) do
+		txt = txt .. v .. "\n"
+	end
+
+	logger:SetText(txt)
+
+end
+
+function pony.menu_runstring()
+
+	local ForColor = ForColors[CurColor]
+
+	local backpanel = vgui.Create("DFrame")
+	backpanel:SetSize(512,512)
+	backpanel:MakePopup()
+	backpanel:SetDraggable(false)
+	backpanel:SetTitle("Run code...")
+	backpanel:Center()
+
+	function backpanel.Paint()
+		draw.RoundedBox(2, 0, 0, backpanel:GetWide(), backpanel:GetTall(), ForColor)
+		draw.RoundedBox(2, 1, 1, backpanel:GetWide() - 2, backpanel:GetTall() - 2, BgColor)
+		draw.RoundedBox(0, 0, 0, backpanel:GetWide(), 22, ForColor)
+	end
+
+	local text = vgui.Create( "DTextEntry", backpanel )
+	text:SetPos(5,22 + 5)
+	text:SetWide(backpanel:GetWide()-10)
+	text:SetTall( backpanel:GetTall() - 27 - 30 )
+	text:SetMultiline(true)
+
+
+	local function btn_paint2(but)
+	
+		function but.OnCursorEntered()
+			but.hover = true
+			but:SetTextColor(BgColor)
+		end
+
+		function but.OnCursorExited()
+			but.hover = false
+			but:SetTextColor(ForColor)
+		end
+
+		function but.Paint()
+			but:SetTextColor(ForColor)
+			draw.RoundedBox(0, 0, 0, but:GetWide(), but:GetTall(), ForColor)
+			draw.RoundedBox(0, 1, 1, but:GetWide() - 2, but:GetTall() - 2, BgColor)
+
+			if but.hover then
+				but:SetTextColor(BgColor)
+				draw.RoundedBox(0, 0, 0, but:GetWide(), but:GetTall(), ForColor)
+			end
+
+		end
+
+	end
+
+	local but = vgui.Create("DButton", backpanel)
+	but:SetSize( text:GetWide() , 25 )
+	but:SetPos(5, backpanel:GetTall() - 30 )
+	but:SetText("Run code ->")
+	btn_paint2(but)
+	function but.DoClick()
+		RunString( text:GetValue() )
+	end
+
+end
+
+function pony.menu_chat()
+
+	local ForColor = ForColors[CurColor]
+
+	local backpanel = vgui.Create("DFrame")
+	backpanel:SetSize(256,10 + 35 + 35 + 35 + 35 + 22 + 35)
+	backpanel:MakePopup()
+	backpanel:SetDraggable(false)
+	backpanel:SetTitle("Suggestions/reports/feedback")
+	backpanel:SetPos(ScrW()/2 + 256 + 5, ScrH()/2 - (10+35+35+35+35+22+35)/2 )
+
+	function backpanel.Paint()
+		draw.RoundedBox(2, 0, 0, backpanel:GetWide(), backpanel:GetTall(), ForColor)
+		draw.RoundedBox(2, 1, 1, backpanel:GetWide() - 2, backpanel:GetTall() - 2, BgColor)
+		draw.RoundedBox(0, 0, 0, backpanel:GetWide(), 22, ForColor)
+	end
+
+	local textbox = vgui.Create("DTextEntry", backpanel)
+	textbox:SetSize(backpanel:GetWide()-10, backpanel:GetTall()-60)
+	textbox:SetPos(5,27)
+	textbox:SetMultiline(true)
+
+	local function btn_paint(but)
+	
+		function but.OnCursorEntered()
+			but.hover = true
+			but:SetTextColor(BgColor)
+		end
+
+		function but.OnCursorExited()
+			but.hover = false
+			but:SetTextColor(ForColor)
+		end
+
+		function but.Paint()
+			but:SetTextColor(ForColor)
+			draw.RoundedBox(0, 0, 0, but:GetWide(), but:GetTall(), ForColor)
+			draw.RoundedBox(0, 1, 1, but:GetWide() - 2, but:GetTall() - 2, BgColor)
+
+			if but.hover then
+				but:SetTextColor(BgColor)
+				draw.RoundedBox(0, 0, 0, but:GetWide(), but:GetTall(), ForColor)
+			end
+
+		end
+
+	end
+
+	local but = vgui.Create("DButton", backpanel)
+	but:SetSize(textbox:GetWide(), 50 - 27)
+	but:SetPos(5,backpanel:GetTall() - 55 + 27)
+	btn_paint(but)
+	but:SetText("Leave message ->")
+
+	function but.DoClick()
+
+		local message = textbox:GetValue()
+
+		http.Post( "http://www.kawaii.gdaap.com/messages/msg.php", {sid=me:SteamID(), msg=message}, function() pony.msg("Your message has been sent!", 10) backpanel:Remove() end, function() end )
+
+	end
+	--
+
+end
+
+function pony.menu_more_options()
+
+	local ForColor = ForColors[CurColor]
+
+	local backpanel = vgui.Create("DFrame")
+	backpanel:SetSize(256,10 + 35 + 35 + 35 + 35 + 22 + 35)
+	backpanel:MakePopup()
+	backpanel:SetDraggable(false)
+	backpanel:SetTitle("More options...")
+	backpanel:SetPos(ScrW()/2 - 512 - 5, ScrH()/2 - (10+35+35+35+35+22+35)/2 )
+
+	function backpanel.Paint()
+		draw.RoundedBox(2, 0, 0, backpanel:GetWide(), backpanel:GetTall(), ForColor)
+		draw.RoundedBox(2, 1, 1, backpanel:GetWide() - 2, backpanel:GetTall() - 2, BgColor)
+		draw.RoundedBox(0, 0, 0, backpanel:GetWide(), 22, ForColor)
+	end
+
+	local function btn_paint(but)
+	
+		function but.OnCursorEntered()
+			but.hover = true
+			//but:SetTextColor(BgColor)
+		end
+
+		function but.OnCursorExited()
+			but.hover = false
+			//but:SetTextColor(ForColor)
+		end
+
+		function but.Paint()
+			but:SetTextColor(ForColor)
+			draw.RoundedBox(0, 0, 0, 25, 25, ForColor)
+			draw.RoundedBox(0, 1, 1, 25 - 2, 25 - 2, BgColor)
+
+			if but.hover then
+				draw.RoundedBox(0, 0, 0, 25, 25, ForColor)
+			end
+
+			if vars[but.var] then
+				draw.RoundedBox(0, 0, 0, 25, 25, Color( ForColor.r, ForColor.g, ForColor.b, 100 ))
+			end
+
+		end
+
+	end
+
+	local function btn_paint2(but)
+	
+		function but.OnCursorEntered()
+			but.hover = true
+			but:SetTextColor(BgColor)
+		end
+
+		function but.OnCursorExited()
+			but.hover = false
+			but:SetTextColor(ForColor)
+		end
+
+		function but.Paint()
+			but:SetTextColor(ForColor)
+			draw.RoundedBox(0, 0, 0, but:GetWide(), but:GetTall(), ForColor)
+			draw.RoundedBox(0, 1, 1, but:GetWide() - 2, but:GetTall() - 2, BgColor)
+
+			if but.hover then
+				but:SetTextColor(BgColor)
+				draw.RoundedBox(0, 0, 0, but:GetWide(), but:GetTall(), ForColor)
+			end
+
+		end
+
+	end
+
+	local but = vgui.Create("DButton", backpanel)
+	but:SetSize(backpanel:GetWide() - 10, 30)
+	but:SetPos(5, 22 + 10)
+	but:SetText("No recoil")
+	but.var = "more.norecoil"
+	btn_paint(but)
+	function but.DoClick()
+		vars[but.var] = !vars[but.var]
+	end
+
+	local but = vgui.Create("DButton", backpanel)
+	but:SetSize(backpanel:GetWide() - 10, 30)
+	but:SetPos(5, 22 + 10 + 30 + 5)
+	but:SetText("No spread")
+	but.var = "more.nospread"
+	btn_paint(but)
+	function but.DoClick()
+		vars[but.var] = !vars[but.var]
+	end
+
+	local but = vgui.Create("DButton", backpanel)
+	but:SetSize(backpanel:GetWide() - 10, 30)
+	but:SetPos(5, 22 + 10 + 35 + 35)
+	but:SetText("Log data")
+	but.var = "more.log"
+	btn_paint(but)
+	function but.DoClick()
+		vars[but.var] = !vars[but.var]
+	end
+
+	local but = vgui.Create("DButton", backpanel)
+	but:SetSize(backpanel:GetWide() - 10, 30)
+	but:SetPos(5, 22 + 10 + 35 + 35 + 35)
+	but:SetText("View logs...")
+	btn_paint2(but)
+	function but.DoClick()
+		pony.menu_logs()
+	end
+
+	local but = vgui.Create("DButton", backpanel)
+	but:SetSize(backpanel:GetWide() - 10, 30)
+	but:SetPos(5, 22 + 10 + 35 + 35 + 35 + 35)
+	but:SetText("Run code...")
+	btn_paint2(but)
+	function but.DoClick()
+		pony.menu_runstring()
+	end
+
+
+
+
+end
 
 function pony.kawaii_srouce_banner()
 
@@ -1023,7 +1450,7 @@ end
 
 function pony.menu()
 
-	local x,y = ScrW()/2 - 256, ScrH()/2 - 247/2
+	local x,y = ScrW()/2 - 256, ScrH()/2 - 247/2 - 30
 
 	local ForColor = ForColors[CurColor]
 
@@ -1031,13 +1458,13 @@ function pony.menu()
 
 	local backpanel = vgui.Create("DFrame")
 	backpanel:SetSize(512,22)
-	backpanel:SetPos(-512,ScrH()/2 - 247/2)
+	backpanel:SetPos(-512,ScrH()/2 - 247/2 - 30)
 	backpanel:MakePopup()
 	backpanel:SetDraggable(0)
 	backpanel:SetTitle(pony.name .. " " .. pony.version .. " by " .. pony.author)
 
 	backpanel:MoveTo( x, y, 0.4, 0, 1)
-	backpanel:SizeTo( 512, 247, 0.4, 0.5, 1)
+	backpanel:SizeTo( 512, 247 + 55	, 0.4, 0.5, 1)
 
 	function backpanel.Paint()
 		draw.RoundedBox(2, 0, 0, backpanel:GetWide(), backpanel:GetTall(), ForColor)
@@ -1161,6 +1588,21 @@ function pony.menu()
 
 	end
 
+	local but = pony.button()
+	but:SetSize( backpanel:GetWide()/2 - 5 - 2, 50 )
+	but:SetPos( 5 , 256 - 10 )
+	but:SetText("<- More options")
+	function but.DoClick()
+		pony.menu_more_options()
+	end
+
+	local but = pony.button()
+	but:SetSize( backpanel:GetWide()/2 - 5 - 2, 50 )
+	but:SetPos( backpanel:GetWide()/2 + 2 , 256 - 10 )
+	but:SetText("Leave me a message ->")
+	function but.DoClick()
+		pony.menu_chat()
+	end
 
 	local but = pony.button()
 	but:SetSize(100,50)
@@ -1508,6 +1950,7 @@ end
 concommand.Add("pony", function()
 	pony.menu()
 end)
+
 if file.Find( "lua/bin/gmcl_spreadthebutter_win32.dll", "MOD" ) then
 	pony.print( "Nospread Module Found!" )
 	pony.Nospread = true
