@@ -247,7 +247,7 @@ function pony.isvisible(target) -- This needs to be improved in the future
 	local headpos
 	
 	if target_head then
-		headpos = target:GetAttachment(target_head)
+		headpos = target:GetAttachment(target_head).Pos
 	end
 
 	local StartPos = me:GetShootPos()
