@@ -129,7 +129,7 @@ pony.Spreads = {}
 pony.detours = {} -- This should probably be removed since it's no longer being used.
 
 pony.name = "PonyHack"
-pony.version = "2.6.0"
+pony.version = "2.6.1"
 pony.author = "Kawaii Hafnium"
 pony.prefix = "[PonyHack]"
 
@@ -145,7 +145,6 @@ surface.CreateFont( "PonyFont_n", {
 
 require("hook")
 
--- Localizing functions we use often, should make them run a bit faster
 local LocalPlayer = LocalPlayer
 local math = math
 local draw = draw
@@ -169,6 +168,7 @@ local KEY_SPACE = KEY_SPACE
 local KEY_E = KEY_E
 local _R = debug.getregistry()
 local me = LocalPlayer()
+local attacking = false
 
 -- Menu color
 local CurColor = 3
@@ -256,7 +256,9 @@ function pony.isvisible(target) -- This needs to be improved in the future
 	tr.start = StartPos
 	tr.endpos = headpos or (target:GetPos() + Vector(0,0,16)) 
 	tr.mask = MASK_SHOT
-	tr.filter = function( ent ) return ent:IsPlayer() end 
+	tr.filter = function( ent ) 
+		return !ent:IsPlayer()
+	end 
  
 	local trace = util.TraceLine( tr )
 
@@ -409,17 +411,22 @@ function pony.RetreiveUpdate()
 
 end
 
-local ShouldAttack = false
 function pony.attack(cmd)
 
-	ShouldAttack = !ShouldAttack
-
-	if !ShouldAttack then 
-		cmd:SetButtons(0)
-		return 
+	local wep = me:GetActiveWeapon()
+	if IsValid(wep) and wep.Primary and (wep.Primary.Automatic == true) then
+		cmd:SetButtons( IN_ATTACK )
+		attacking = true
+	else
+		print(attacking)
+		if attacking then
+			cmd:SetButtons(0)
+			attacking = false
+		else
+			cmd:SetButtons( IN_ATTACK )
+			attacking = true
+		end
 	end
-
-	cmd:SetButtons( IN_ATTACK )
 
 end
 
@@ -642,6 +649,13 @@ pony.addhook("CreateMove", "aimbot", function(cmd)
 	//cmd:SetViewAngles( Angle( -181, cmd:GetViewAngles().y, cmd:GetViewAngles().r ) )
 
 	local time1 = os.clock()
+
+	local wep = LocalPlayer():GetActiveWeapon()
+
+	if attacking and IsValid(wep) and wep.Primary and wep.Primary.Automatic then
+		cmd:SetButtons(0)
+		attacking = false
+	end
 
 	if !vars["aimbot.enabled"] then
 		return
