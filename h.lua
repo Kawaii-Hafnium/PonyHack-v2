@@ -243,11 +243,11 @@ end
 
 function pony.isvisible(target) -- This needs to be improved in the future
 
-	local target_head = target:GetAttachment("eyes")
+	local target_head = target:LookupAttachment("eyes")
 	local headpos
 	
 	if target_head then
-		headpos = target:GetBonePosition(target_head)
+		headpos = target:GetAttachment(target_head)
 	end
 
 	local StartPos = me:GetShootPos()
