@@ -241,9 +241,7 @@ function pony.getfakeangle()
 end
 
 
-function pony.isvisible(target) -- This needs to be improved in the futire
-
-	if true then return true end
+function pony.isvisible(target) -- This needs to be improved in the future
 
 	local target_head = target:LookupBone("eyes")
 	local headpos
@@ -258,7 +256,7 @@ function pony.isvisible(target) -- This needs to be improved in the futire
 	tr.start = StartPos
 	tr.endpos = headpos or (target:GetPos() + Vector(0,0,16)) 
 	tr.mask = MASK_SHOT
-	tr.filter = function( ent ) return true end 
+	tr.filter = function( ent ) return ent:IsPlayer() end 
  
 	local trace = util.TraceLine( tr )
 
