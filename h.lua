@@ -74,10 +74,6 @@ If you have any problems with this hack or just want to add me, feel free to do 
 
 ]]--
 
-if !file.Exists("PonyHack","DATA") then
-	file.CreateDir("PonyHack")
-end
-
 local pony = {}
 local vars = {}
 local data = {
@@ -129,7 +125,7 @@ pony.Spreads = {}
 pony.detours = {} -- This should probably be removed since it's no longer being used.
 
 pony.name = "PonyHack"
-pony.version = "2.6.1"
+pony.version = "2.6.2"
 pony.author = "Kawaii Hafnium"
 pony.prefix = "[PonyHack]"
 
@@ -246,7 +242,7 @@ function pony.isvisible(target) -- This needs to be improved in the future
 	local target_head = target:LookupAttachment("eyes")
 	local headpos
 	
-	if target_head then
+	if target_head and target:GetAttachment(target_head) then
 		headpos = target:GetAttachment(target_head).Pos
 	end
 
@@ -269,11 +265,6 @@ end
 
 function pony.addhook(name,name2,func)
 	local hidden_name = util.CRC( name2 )
-
-	//if !hook.GetTable()[name] then
-	//	hook.GetTable()[name] = {}
-	//end
-
 	hook.Add(name,hidden_name,func)
 end
 
@@ -627,7 +618,7 @@ pony.addhook("HUDPaint", "wallhack.crosshair", function()
 	local gapx
 
 	if wep and wep.Primary and wep.Primary.Spread then
-		gap = wep.Primary.Spread * (ScrW()/2)
+		gap = wep.Primary.Spread * (x)
 	else
 		gap = 5
 	end
@@ -646,10 +637,6 @@ end)
 local target = nil
 pony.addhook("CreateMove", "aimbot", function(cmd)
 
-	//cmd:SetViewAngles( Angle( -181, cmd:GetViewAngles().y, cmd:GetViewAngles().r ) )
-
-	local time1 = os.clock()
-
 	local wep = LocalPlayer():GetActiveWeapon()
 
 	if attacking and IsValid(wep) and wep.Primary and wep.Primary.Automatic then
@@ -658,6 +645,7 @@ pony.addhook("CreateMove", "aimbot", function(cmd)
 	end
 
 	if !vars["aimbot.enabled"] then
+		target = nil
 		return
 	end
 
@@ -719,7 +707,7 @@ pony.addhook("CreateMove", "aimbot", function(cmd)
 
 		local new_angs = ( target:GetBonePosition( target:LookupBone("ValveBiped.Bip01_Head1") ) - me:GetShootPos() ):Angle()
 
-		//cmd:SetViewAngles( new_angs )
+		target:SetAnimation( 0 )
 
 		if pony.Nospread and vars["more.nospread"] then
 		
@@ -757,8 +745,6 @@ pony.addhook("CreateMove", "aimbot", function(cmd)
 		if vars["aimbot.rage"] then
 			pony.attack(cmd)
 		end
-
-		print( os.clock() - time1 )
 
 	end
 
